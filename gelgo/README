@@ -2,9 +2,8 @@ PLEASE NOTE: This is pre-alpha, and doesn't work yet.  Not all of the
 functionality has been written, and just about everything that has been
 needs to be re-written.
 
-Gelatin Go is a client / server Go system.  It started as an academic project,
-and now it is a platform for experimentation and a good way to kill time.  in
-its short life it has been called JavaGo, Jello Go, and now Gelatin Go.
+Jello Go is a client / server Go system.  It started as an academic project,
+and now it is a platform for experimentation and a good way to kill time.  
 
 Licensing: All files in the directories of "core", and "network/general" are
 release under the LGPL.  All other files are released under the GPL.
