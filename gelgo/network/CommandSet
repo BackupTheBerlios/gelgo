@@ -1,0 +1,60 @@
+Client / Server command set:
+	Command Strings are stored in GoServerCommand.command
+	Command Parameters are stored in GoServerCommand.cData
+	Table ids are stored in GoServerCommand.gId
+	
+	Game ids and table ids are the same thing (since there is only one game per table and only one table per game).
+	Game / table ids are provided in all commands.
+	Any communication on the server level will get the game / table id of '-1'
+	The game / table id of '0' is reserved for server commands that may be implemented some day.
+	
+	not implemented in this command set is pre-game negotiation, watchers of tables, and saved games / players.
+	this is the minimum that is needed to make Noah's gui work.	
+
+To Server / From Client
+	Command				Parameters in GoServerCommand object		Notes
+	----------------------------------------------------------------------------------------------------------
+	login				String userName					no authentication for now
+	joinGame			none
+	newGame				int in_size, double in_komi,
+					int in_handicap, int amountOfTime
+	requestPlayersAtTableList	none						table id and game id are the same
+	placeStone			Coordinates coor
+	pass				none
+	surrender			none
+	toggleDeadStones		Coordinates coor
+	doneMarkingDeadStones		none
+	requestScoreBoard		none						requests post-game negotiation board
+	disputePostGameNegotiation	String reason
+	tableChat			String message
+	playerChat			Player who, String message
+	serverChat			String message
+	requestTableList		none						all tables on server
+	requestBoard			none
+	requestServerPlayerList		none
+	requestCurrentClocks		none
+	
+To Client / From Server
+	Command				Parameters					Notes
+	----------------------------------------------------------------------------------------------------------
+	loginOk				String message
+	startNewGame			Board newBoard
+	resumeNormalPlay		none
+	opponentJoinedGame		Player who
+	illegalLastMove			String reason
+	refreshPlayersAtTableList	ArrayList players				Contains Player objects
+	opponentPlacedStone		Board newBoard, Coordinates prevMove
+	opponentPassed			none
+	opponentSurrenders		none
+	startPostGameNegotiation	none
+	refreshScoreBoard		Board scoreBoard				sends post-game negotiation board
+	opponentToggledStones		Board scoreBoard
+	gameOver			Board finalBoard, Board territoryBoard,
+					int blackScore, int whiteScore			territory Board has stones in all territories
+	tableChat			Player from, String message
+	playerChat			Player from, String message
+	refreshTableList		ArrayList tableList				ArrayList contains Table objects, index is table id
+	refreshBoard			Board newBoard
+	refreshServerPlayerList		ArrayList playerList				ArrayList contains Player objects
+	refreshClocks			int secondsOnBlack, int secondsOnWhite		time is in seconds
+	

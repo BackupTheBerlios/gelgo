@@ -1,0 +1,3 @@
+### Run this to generate all javadocs ###
+
+javadoc `find .. -regex .*\.java`
