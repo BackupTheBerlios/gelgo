@@ -3,7 +3,7 @@ package game;
 import java.util.*;
 import java.io.*;
 
-// status: compileList dumps core! 
+// status: in testing. 
 
 /** Creates a collection of associated locations.
  * 	<p>"Associated" means:<br>
@@ -19,25 +19,34 @@ public class AssociatedCoordinates implements Serializable
 	private boolean connectsToWhite = false;
 	private boolean connectsToBlack = false;
 	private boolean connectsToSpace = false;
+	private int hash;
 
 	/** constructor: builds collections. */
 	public AssociatedCoordinates(Board board, Coordinates coor)
 	{
 		coordinates = new ArrayList();
-		compileList(board, coor);	
+		compileList(board, coor);
+
+                int hash = 0;
+                for (int i = 0; i < coordinates.size(); i++)
+			hash += coordinates.get(i).hashCode();
 	}
 
-	/** overridden equals. */
 	public boolean equals(AssociatedCoordinates ac)
 	{
 		if (coordinates.size() != ac.size())
 			return false;
 		
 		for (int i = 0; i < coordinates.size(); i++)
-			if (!coordinates.contains(ac.get(i))) // depends on coordinates only appearing once in a list
+			if (!coordinates.contains(ac.get(i))) 
 				return false;
 		
 		return true;
+	}
+
+	public int hashCode()
+	{
+		return hash;
 	}
 
 	/** returns true if {@link Coordinates} exists in collection. */
@@ -48,13 +57,6 @@ public class AssociatedCoordinates implements Serializable
 		else
 			return false;
 	}
-
-	public void add(Coordinates coor)
-	{
-		coordinates.add(coor);
-	}
-
-	public void remove(Coordinates coor) {}
 
 	/** returns the index of a {@link Coordinates} object. */
 	public int indexOf(Coordinates coor)
@@ -102,13 +104,12 @@ public class AssociatedCoordinates implements Serializable
 		Coordinates lookingHere;
 		int myColorCode, theirColorCode;
 
-System.out.println("Entered Method.");
 		// get whatever is at coor
 		try 
 		{ 
 			myStone = grid.lookAt(coor);
+			coordinates.add(coor); // add location to list
 			myColorCode = stoneColorCode(myStone);
-System.out.println("Color of stone is " + myColorCode);
 		} 
 		catch (OffBoardException e) 
 		{ 
@@ -125,13 +126,10 @@ System.out.println("Color of stone is " + myColorCode);
 				
 				if (grid.areOnBoard(coor.direction(i)))
 				{
-System.out.println("looking at " + coor.direction(i));
 					theirColorCode = stoneColorCode(grid.lookAt(coor.direction(i)));
-System.out.println("has color " + theirColorCode);
 
 					if (myColorCode - theirColorCode == 0 && !coordinates.contains(coor.direction(i)))
 					{
-System.out.println("Colors are the same and coordinates where not found in list.");
 						similar = true;
 					}
 					else
@@ -152,15 +150,12 @@ System.out.println("Colors are the same and coordinates where not found in list.
 		
 					if (similar == true)
 					{
-System.out.println("About to recurse.");
 						compileList(grid, coor.direction(i));
 					}
 				}
 			}
 		} catch (OffBoardException e) { System.err.println("AssociatedCoordinates.compileList(): " + e); }
 		
-		// add location to list
-		coordinates.add(coor);
 		return;
 	}
 

@@ -11,6 +11,8 @@ public class AssociatedCoordinatesTest extends TestCase
 	ArrayList groupAt0x11;
 	AssociatedCoordinates assCo12x7;
 	AssociatedCoordinates assCo0x11;
+	AssociatedCoordinates assCo0x1_1;
+	AssociatedCoordinates assCo0x1_2;
 	
 	protected void setUp()
 	{
@@ -89,15 +91,17 @@ public class AssociatedCoordinatesTest extends TestCase
 		groupAt0x11.add(new Coordinates(9, 16));
 		groupAt0x11.add(new Coordinates(10, 16));
 		groupAt0x11.add(new Coordinates(10, 17));
+
+                assCo0x1_1 = new AssociatedCoordinates(myBoard, new Coordinates(0, 1));
+		assCo0x1_2 = new AssociatedCoordinates(myBoard, new Coordinates(0, 1));
+                assCo12x7 = new AssociatedCoordinates(myBoard, new Coordinates(12, 7));
+                assCo0x11 = new AssociatedCoordinates(myBoard, new Coordinates(0, 11));
 	}
 
 	public void testAssociatedCoordinatesConstructor()
 	{
 		Coordinates coor;
 
-		assCo12x7 = new AssociatedCoordinates(myBoard, new Coordinates(12, 7));
-		assCo0x11 = new AssociatedCoordinates(myBoard, new Coordinates(0, 11));
-	
 		for (int i = 0; i < myBoard.getSize(); i++)
 		{
 			for (int j = 0; j < myBoard.getSize(); j++)
@@ -115,6 +119,21 @@ public class AssociatedCoordinatesTest extends TestCase
 					Assert.assertFalse(assCo0x11.contains(coor));
 			}
 		} 
+	}
+
+	public void testAssociatedCoordinatesHashCode()
+	{
+		Assert.assertEquals(assCo0x1_1.hashCode(), assCo0x1_2.hashCode());
+		Assert.assertEquals(assCo0x1_1.hashCode(), assCo0x1_1.hashCode());
+	}
+
+	public void testAssociatedCoordinatesEquals()
+	{
+		Assert.assertEquals(assCo0x1_1, assCo0x1_1);
+		Assert.assertEquals(assCo0x1_1, assCo0x1_2);
+		Assert.assertFalse(assCo0x1_1.equals(null));
+		Assert.assertFalse(assCo0x1_1.equals("foo"));
+		Assert.assertFalse(assCo0x1_1.equals(assCo0x11));
 	}
 	
 	public static Test suite()

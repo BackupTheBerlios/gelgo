@@ -33,28 +33,6 @@ public class Coordinates implements Serializable
 		return y;
 	}
 	
-	/**
-         * Mutator for x component of a coordinate
-         *
-	 * @param i integer value to set X to
-         *
-         */
-	public void setX(int i)
-	{
-		x = i;
-	}
-	
-	/**        
-         * Mutator for y component of a coordinate 
-         *
-         * @param i integer value to set Y to
-         *
-         */
-	public void setY(int i)
-	{
-		y = i;
-	}
-	
 	// usefull methods
 	/**
 	 * Navigation method for coordinates, returns coordinates
@@ -162,7 +140,7 @@ public class Coordinates implements Serializable
 
 	public int hashCode()
 	{
-		return toString().hashCode();
+		return (x*3) + (y*5); // each data field multiplied by consecutive prime number 
 	}
 
 	public String toString()

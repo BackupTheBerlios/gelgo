@@ -294,7 +294,7 @@ public class Board implements Serializable
          */
 	public int hashCode()
 	{
-		return this.toString().hashCode();
+		return 1234567;  // mutable objects with hashCodes based on fields get lost in hashtables!
 	}
 
 	/**

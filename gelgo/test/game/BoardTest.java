@@ -156,31 +156,14 @@ public class BoardTest extends TestCase
 
 	public void testBoardHashCode()
 	{
-		final int bigSize = 19;
-		board1 = RandomBoardGenerator.generate(bigSize); 
-		Coordinates lastStone = null;
-		
-		Assert.assertEquals(board1.hashCode(), board1.hashCode());
-		Assert.assertTrue(board1.hashCode() != board2.hashCode());
-		board2 = (Board) board1.clone();
-		Assert.assertEquals(board1.hashCode(), board2.hashCode());
-		
 		try
 		{
-			for (int i = 0; i < bigSize; i++)
-			{
-				for (int j = 0; j < bigSize; j++)
-				{
-					if (board1.lookAt(new Coordinates(j, i)) != null)
-						lastStone = new Coordinates(j, i);
-				}
-			}
-
-			board1.remove(lastStone);
-		}
-		catch (GoException e) { Assert.fail("This is an error in the test."); }
-
-		Assert.assertTrue(board1.hashCode() != board2.hashCode());
+			board1.put(new Coordinates(1, 1), Color.BLACK);
+			board2.put(new Coordinates(1, 1), Color.BLACK);
+			Assert.assertEquals(board1.hashCode(), board2.hashCode());
+			board2.put(new Coordinates(1, 2), Color.WHITE);
+			Assert.assertEquals("Dynamic hashcodes in mutable objects screw up hashtables.", board1.hashCode(), board1.hashCode());
+		} catch (GoException e) { Assert.fail(); }
 	}
 
 	public void testBoardToString()

@@ -16,7 +16,7 @@ public class AllTests {
 		TestSuite suite= new TestSuite("Game Tests");
 		suite.addTest(BoardTest.suite());
 		suite.addTest(CoordinatesTest.suite());
-		//suite.addTest(AssociatedCoordinatesTest.suite());
+		suite.addTest(AssociatedCoordinatesTest.suite());
 		return suite;
 	}
 }
