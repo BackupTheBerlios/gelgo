@@ -1,6 +1,8 @@
 package game;
 import java.io.*;
 
+// status: in testing
+
 /**
  * The coordinates class is meant to make board manipulation easier, its basically
  * a wrapper for navigation of board spaces
@@ -62,7 +64,7 @@ public class Coordinates implements Serializable
          */
 	public Coordinates up()
 	{
-		Coordinates coor = new Coordinates(x, y + 1);
+		Coordinates coor = new Coordinates(x, y - 1);
 		return coor;
 	}
 
@@ -74,7 +76,7 @@ public class Coordinates implements Serializable
          */
 	public Coordinates down()
 	{
-		Coordinates coor = new Coordinates(x, y - 1);
+		Coordinates coor = new Coordinates(x, y + 1);
 		return coor;
 	}
 	
