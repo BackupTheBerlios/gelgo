@@ -1,0 +1,20 @@
+import junit.framework.*;
+
+public class BoardTest extends TestCase
+{
+	// setUp variable initialized as class level
+
+	protected void setUp()
+	{
+	}
+	
+	public static Test suite()
+	{
+		return new TestSuite(BoardTest.class);
+	}
+
+	public static void main(String args[])
+	{
+		junit.textui.TestRunner.run(suite());
+	}
+}

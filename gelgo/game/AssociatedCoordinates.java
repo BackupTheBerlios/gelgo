@@ -54,6 +54,8 @@ public class AssociatedCoordinates implements Serializable
 		coordinates.add(coor);
 	}
 
+	public void remove(Coordinates coor) {}
+
 	/** returns the index of a {@link Coordinates} object. */
 	public int indexOf(Coordinates coor)
 	{
