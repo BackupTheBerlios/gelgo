@@ -1,7 +1,8 @@
 package game;
 import java.io.*;
 
-// status: being edited for transfer
+// status: tested.  in need of revision for effeciency.
+
 // i am thinking of basing Board off of a hashtable instead of a
 // multi-dimensional array.  --steve
 

@@ -1,7 +1,7 @@
 package game;
 import java.io.*;
 
-// status: in testing
+// status: tested. 
 
 /**
  * The coordinates class is meant to make board manipulation easier, its basically
