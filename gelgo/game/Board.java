@@ -98,7 +98,10 @@ public class Board implements Serializable
     */
 	public Stone lookAt(Coordinates coor) throws OffBoardException
 	{
-		if (coor != null && areOnBoard(coor))
+		if (coor == null)
+			return null;
+		
+		if (areOnBoard(coor))
 				return gameBoard[coor.getX()][coor.getY()];
 		
 		throw new OffBoardException("Board.lookAt(): Off of Board");

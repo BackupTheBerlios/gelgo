@@ -157,7 +157,7 @@ public class BoardTest extends TestCase
 	public void testBoardHashCode()
 	{
 		final int bigSize = 19;
-		board1 = randomBoard(bigSize); 
+		board1 = RandomBoardGenerator.generate(bigSize); 
 		Coordinates lastStone = null;
 		
 		Assert.assertEquals(board1.hashCode(), board1.hashCode());
@@ -217,33 +217,5 @@ public class BoardTest extends TestCase
 	public static void main(String args[])
 	{
 		junit.textui.TestRunner.run(suite());
-	}
-
-	// util method, not test
-	private Board randomBoard(int size)
-	{
-		Board myBoard = new Board(size);
-		Random newNumber = new Random();
-		
-		try
-		{
-			for (int i = 0; i < size; i++)
-			{
-				for (int j = 0; j < size; j++)
-				{
-					switch (newNumber.nextInt(3))
-					{
-						case 1:
-							myBoard.put(new Coordinates(j, i), Color.BLACK);
-							break;
-						case 2:
-							myBoard.put(new Coordinates(j, i), Color.WHITE);
-							break;
-					}
-				}
-			}
-		} catch (GoException e) { System.err.println("BoardTest.randomBoard(): this really shouldn't happen."); }
-
-		return myBoard;
 	}
 }

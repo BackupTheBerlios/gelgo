@@ -3,7 +3,7 @@ package game;
 import java.util.*;
 import java.io.*;
 
-// status: not tested.
+// status: compileList dumps core! 
 
 /** Creates a collection of associated locations.
  * 	<p>"Associated" means:<br>
@@ -21,10 +21,10 @@ public class AssociatedCoordinates implements Serializable
 	private boolean connectsToSpace = false;
 
 	/** constructor: builds collections. */
-	public AssociatedCoordinates(Board grid, Coordinates coor)
+	public AssociatedCoordinates(Board board, Coordinates coor)
 	{
 		coordinates = new ArrayList();
-		compileList(grid, coor);	
+		compileList(board, coor);	
 	}
 
 	/** overridden equals. */
@@ -47,6 +47,11 @@ public class AssociatedCoordinates implements Serializable
 			return true;
 		else
 			return false;
+	}
+
+	public void add(Coordinates coor)
+	{
+		coordinates.add(coor);
 	}
 
 	/** returns the index of a {@link Coordinates} object. */
@@ -92,11 +97,16 @@ public class AssociatedCoordinates implements Serializable
 	{
 		Stone myStone;
 		boolean similar;
-		
+		Coordinates lookingHere;
+		int myColorCode, theirColorCode;
+
+System.out.println("Entered Method.");
 		// get whatever is at coor
 		try 
 		{ 
 			myStone = grid.lookAt(coor);
+			myColorCode = stoneColorCode(myStone);
+System.out.println("Color of stone is " + myColorCode);
 		} 
 		catch (OffBoardException e) 
 		{ 
@@ -113,31 +123,36 @@ public class AssociatedCoordinates implements Serializable
 				
 				if (grid.areOnBoard(coor.direction(i)))
 				{
-					// report surroundings
-					if (grid.lookAt(coor.direction(i)) == null) // bordering space
-					{
-						connectsToSpace = true;
-						
-						if (myStone == null)
-							similar = true;
-					}
-					else if (!connectsToBlack && grid.lookAt(coor.direction(i)).getColor() == Color.BLACK) // bordering black
-					{
-						connectsToBlack = true;
+System.out.println("looking at " + coor.direction(i));
+					theirColorCode = stoneColorCode(grid.lookAt(coor.direction(i)));
+System.out.println("has color " + theirColorCode);
 
-						if (myStone != null && myStone.getColor() == Color.BLACK)
-							similar = true;
-					}
-					else if (!connectsToWhite && grid.lookAt(coor.direction(i)).getColor() == Color.WHITE) // bordering white
+					if (myColorCode - theirColorCode == 0 && !coordinates.contains(coor.direction(i)))
 					{
-						connectsToWhite = true;
-
-						if (myStone != null && myStone.getColor() == Color.WHITE)
-							similar = true;
+System.out.println("Colors are the same and coordinates where not found in list.");
+						similar = true;
 					}
-
+					else
+					{
+						switch (theirColorCode)
+						{
+							case 0:
+								connectsToSpace = true;
+								break;
+							case 1:
+								connectsToBlack = true;
+								break;
+							case 2:
+								connectsToWhite = true;
+								break;
+						}
+					}
+		
 					if (similar == true)
+					{
+System.out.println("About to recurse.");
 						compileList(grid, coor.direction(i));
+					}
 				}
 			}
 		} catch (OffBoardException e) { System.err.println("AssociatedCoordinates.compileList(): " + e); }
@@ -145,5 +160,17 @@ public class AssociatedCoordinates implements Serializable
 		// add location to list
 		coordinates.add(coor);
 		return;
+	}
+
+	protected int stoneColorCode(Stone s)
+	{
+		if (s == null)
+			return 0;
+		else if (s.getColor() == Color.BLACK)
+			return 1;
+		else if (s.getColor() == Color.WHITE)
+			return 2;
+		else
+			return -1;
 	}
 }
