@@ -1,7 +1,9 @@
 package game;
 import java.io.*;
 
-// being edited for transfer
+// status: being edited for transfer
+// i am thinking of basing Board off of a hashtable instead of a
+// multi-dimensional array.  --steve
 
 /**
  * Board simulates a simple, dumb grid board and {@link Stone}s.
@@ -95,7 +97,7 @@ public class Board implements Serializable
     */
 	public Stone lookAt(Coordinates coor) throws OffBoardException
 	{
-		if (areOnBoard(coor))
+		if (coor != null && areOnBoard(coor))
 				return gameBoard[coor.getX()][coor.getY()];
 		
 		throw new OffBoardException("Board.lookAt(): Off of Board");
@@ -103,13 +105,13 @@ public class Board implements Serializable
 	
 	/**
     * Returns a String from a board array.
-    * Uses lookAt().
+    * Uses lookAt().  Use this only for testing purposes.
     *
     * @return String
     *
     */
-	public String toString() //uses lookAt(), must catch OffBoardException
-	{
+	public String toString() 
+	{			
 		String bBuffer = "";
 		Coordinates coor;
 		
@@ -145,6 +147,7 @@ public class Board implements Serializable
 	* by toString().
 	*<p>Columns are delimited by newline characters.  Also
 	* there must be an equal number of rows and columns.
+	* <p>Use this only for testing purposes.
 	*
         * @param s {@link String} that represents board
         *
@@ -217,13 +220,20 @@ public class Board implements Serializable
 	*/	
 	public boolean areOnBoard(Coordinates coor)
 	{
-		int x = coor.getX();
-		int y = coor.getY();
+		int x;
+		int y;
+		boolean passed = false;
 
-		if (x >= 0 && x < getSize() && y >= 0 && y < getSize())
-			return true;
-		else
-			return false;
+		if (coor != null)
+		{
+			x = coor.getX();
+			y = coor.getY();
+			
+			if (x >= 0 && x < getSize() && y >= 0 && y < getSize())
+				passed = true;
+		}
+
+		return passed;
 	}
 	
 	/**
@@ -262,9 +272,10 @@ public class Board implements Serializable
 	 * @return boolean
          *
          */
-	public boolean equals(Board b)
+	public boolean equals(Object obj)
 	{
-		if(this.toString().equals(b.toString())){
+		if(obj instanceof Board && obj != null && this.toString().equals(obj.toString()))
+		{
 			return true;
 		}
 		return false;
@@ -294,7 +305,7 @@ public class Board implements Serializable
 	 * @return Board
          *
          */
-	public static Board catBoard(Board bOne, Board bTwo) throws InvalidBoardException
+	public static Board addStones(Board bOne, Board bTwo) throws InvalidBoardException // i am going to get rid of this method
 	{
 		Coordinates coor;
 		
